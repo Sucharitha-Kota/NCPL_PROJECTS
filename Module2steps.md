@@ -82,7 +82,7 @@ The external table maps to the data files stored in Azure Data Lake. This allows
 ![image](https://github.com/user-attachments/assets/52431b32-5728-43fa-9735-e073a58b2431)
 
 Step 4: Data Exploration with external table.
-
+Refer to the SQL script "".
 
 
 
