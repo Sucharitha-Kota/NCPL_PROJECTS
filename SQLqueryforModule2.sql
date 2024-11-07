@@ -27,7 +27,7 @@ SELECT CustomerID, FirstName, LastName, ModifiedDate
 FROM customer
 ORDER BY ModifiedDate DESC;
 
---query 12
+--query 7
 SELECT CustomerID, FirstName, LastName, rowguid
 FROM customer
 WHERE rowguid ='3f5ae95e-b87d-4aed-95b4-c3797afcb74f';
