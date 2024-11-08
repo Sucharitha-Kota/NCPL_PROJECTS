@@ -87,6 +87,68 @@ Refer to the SQL script "SQLqueryforModule2.sql" file.
 
 Result for the queries are attached below.
 
+--Query 1
+
+--select all the data from the table customer.
+
+SELECT * from customer
+![image](https://github.com/user-attachments/assets/d0ce54f3-6d23-47d0-ba1a-58652bc27008)
+
+
+--Query 2
+
+--Get the customers who has the latest modified date.
+
+SELECT CustomerID, FirstName, LastName, ModifiedDate
+FROM customer
+ORDER BY ModifiedDate DESC;
+![image](https://github.com/user-attachments/assets/e1c867f9-083d-477f-a1e4-1a164cd63590)
+
+
+
+--Query 3
+
+--Find customers who have been modified after a specific date, grouped by SalesPerson.
+
+SELECT SalesPerson, COUNT(CustomerID) AS CustomerCount
+FROM customer
+WHERE ModifiedDate > '"2005-01-01"'
+GROUP BY SalesPerson;
+![image](https://github.com/user-attachments/assets/9bbde359-2637-4e3a-9405-e3a2328e71cb)
+
+
+--Query 4
+
+--Select customers whose last name contains a specific substring (e.g., 'Haines').
+
+SELECT CustomerID, FirstName, LastName 
+FROM customer
+WHERE LastName LIKE '%Haines%';
+![image](https://github.com/user-attachments/assets/f55ce0ea-6c1d-45db-b72b-d65f8cc3f267)
+
+
+--Query 5
+
+--Get customers with a specific domain in their email address (e.g., adventure-works.com).
+
+SELECT CustomerID, FirstName, LastName, EmailAddress
+FROM customer
+WHERE EmailAddress LIKE '"%@adventure-works.com"';
+![image](https://github.com/user-attachments/assets/f7b7dd99-92f8-4d7a-9e47-89d97bc98ac3)
+
+
+--Query 6
+
+--Get customers who have a rowguid matching a specific value.
+
+SELECT CustomerID, FirstName, LastName, rowguid
+FROM customer
+WHERE rowguid ='3f5ae95e-b87d-4aed-95b4-c3797afcb74f';
+![image](https://github.com/user-attachments/assets/0a09dd8e-8a4f-421d-b7b5-4b3f1ea9cce9)
+
+
+
+
 
 
 
