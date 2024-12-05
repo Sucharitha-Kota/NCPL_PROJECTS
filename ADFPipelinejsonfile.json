@@ -1,0 +1,150 @@
+{
+    "name": "projectdatabricks",
+    "properties": {
+        "activities": [
+            {
+                "name": "dataingestion",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "DelimitedTextSource",
+                        "storeSettings": {
+                            "type": "AzureBlobFSReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "DelimitedTextSink",
+                        "storeSettings": {
+                            "type": "AzureBlobFSWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextWriteSettings",
+                            "quoteAllText": true,
+                            "fileExtension": ".txt"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_source_ingestion_storage",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "srcFolder": {
+                                "value": "@pipeline().parameters.targetFolder",
+                                "type": "Expression"
+                            },
+                            "srcTable": {
+                                "value": "@pipeline().parameters.targetTable",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_sink_ingestion_storage",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "sinkFolder": {
+                                "value": "@pipeline().parameters.targetFolder",
+                                "type": "Expression"
+                            },
+                            "sinkTable": {
+                                "value": "@pipeline().parameters.targetTable",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Notebook1",
+                "type": "DatabricksNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "dataingestion",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebookPath": "/Users/sucharithavinay1023@gmail.com/curated"
+                },
+                "linkedServiceName": {
+                    "referenceName": "ls_curated_databricks",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Notebook2",
+                "type": "DatabricksNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Notebook1",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebookPath": "/Users/sucharithavinay1023@gmail.com/staging"
+                },
+                "linkedServiceName": {
+                    "referenceName": "ls_staging_databricks",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "parameters": {
+            "targetFolder": {
+                "type": "string"
+            },
+            "targetTable": {
+                "type": "string"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2024-12-04T04:03:17Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
